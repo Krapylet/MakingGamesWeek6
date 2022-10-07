@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    private float movementSpeed;
+    [SerializeField] private float movementSpeed = 8f;
     private float hori;
-    private float jumpPower;
+    [SerializeField] private float jumpPower = 16f;
     private bool isfacingRight = true;
     [SerializeField] public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -17,6 +17,7 @@ public class playerMovement : MonoBehaviour
     {
         hori = Input.GetAxisRaw("Horizontal");
         Flip();
+        Jump();
     }
     private bool isGrounded()
     {
@@ -28,6 +29,7 @@ public class playerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
+
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f );
