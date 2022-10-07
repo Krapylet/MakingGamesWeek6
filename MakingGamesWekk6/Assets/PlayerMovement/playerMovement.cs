@@ -6,7 +6,6 @@ public class playerMovement : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 8f;
     private float hori;
-    [SerializeField] private float jumpPower = 16f;
     private bool isfacingRight = true;
     [SerializeField] public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -17,34 +16,23 @@ public class playerMovement : MonoBehaviour
     {
         hori = Input.GetAxisRaw("Horizontal");
         Flip();
-        Jump();
-    }
-    private bool isGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-    }
-    void Jump()
-    {
-        if (Input.GetButtonDown("Jump") && isGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-        }
+        //Jump();
 
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f );
-        }
     }
+
+
     void FixedUpdate (){
         rb.velocity = new Vector2(hori*movementSpeed, rb.velocity.y);
     }
     void Flip()
     {
-        if (isfacingRight && hori < 0f || isfacingRight && hori > 0f) {
+        
+        if (isfacingRight && hori < 0f || !isfacingRight && hori > 0f) {
             isfacingRight = !isfacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
-        }
+        } 
     }
+
 }
