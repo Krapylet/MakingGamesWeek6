@@ -18,6 +18,7 @@ public class playerMovement : MonoBehaviour
         hori = Input.GetAxisRaw("Horizontal");
         Flip();
         Jump();
+
     }
     private bool isGrounded()
     {
@@ -40,11 +41,13 @@ public class playerMovement : MonoBehaviour
     }
     void Flip()
     {
-        if (isfacingRight && hori < 0f || isfacingRight && hori > 0f) {
+        
+        if (isfacingRight && hori < 0f || !isfacingRight && hori > 0f) {
             isfacingRight = !isfacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
-        }
+        } 
     }
+
 }
