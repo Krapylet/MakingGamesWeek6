@@ -13,29 +13,35 @@ public class Timer : MonoBehaviour
     public Volume gameOverEffect;
     public TMP_Text timerText;
 
+    private bool gameHasStarted = false;
     private float gameStartTimeStamp;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameStartTimeStamp = Time.time;
-
-        float gameOverEffectStartTimeStamp = gameStartTimeStamp - restartEffectDuration;
-
+        
         DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateTimer();
-        UpdateVFX();
+        if (gameHasStarted)
+        {
+            UpdateTimer();
+        }
 
+        UpdateVFX();
+        CheckTimeLimit();
+    }
+
+    private void CheckTimeLimit()
+    {
         // Check if the time limit has been exeted
         bool timeLimitExeeded = Time.time > gameStartTimeStamp + timeLimit;
         if (timeLimitExeeded)
         {
-            SceneManager.LoadScene("GameOverTestScene");
+            SceneManager.LoadScene("Level 1");
             gameStartTimeStamp = Time.time;
         }
     }
@@ -49,5 +55,31 @@ public class Timer : MonoBehaviour
     {
         int secondsLeft = Mathf.CeilToInt(gameStartTimeStamp + timeLimit - Time.time);
         timerText.text = secondsLeft.ToString();
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(LoadLevel1Async());
+    }
+
+    IEnumerator LoadLevel1Async()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
+        // a sceneBuildIndex of 1 as shown in Build Settings.
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Level 1");
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // After the scene has loaded, enable the timer
+        gameHasStarted = true;
+        timerText.gameObject.SetActive(true);
+        gameStartTimeStamp = Time.time;
     }
 }
