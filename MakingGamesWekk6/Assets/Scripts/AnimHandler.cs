@@ -18,7 +18,19 @@ public class AnimHandler : MonoBehaviour
     }
     private void AnimationHandler()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetTrigger("jump");
+            if (Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.A))
+            {
+                anim.SetBool("jumped", true);
+                anim.SetBool("isWalking_r", false);
+            }
+        }
+        else
+        {
+            anim.SetBool("jumped", false);
+        }
         // if statements that handles our player character sprite animations
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
@@ -28,6 +40,12 @@ public class AnimHandler : MonoBehaviour
             {
                 anim.SetBool("isWalking_r", true);
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                anim.SetBool("jumped", true);
+                anim.SetBool("isWalking_r", false);
+            }
             anim.SetBool("keepWalking", true);
         }
         else
@@ -36,12 +54,15 @@ public class AnimHandler : MonoBehaviour
             anim.SetBool("keepWalking", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            anim.SetBool("jumped", true);
-        } else
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
         {
             anim.SetBool("jumped", false);
+            anim.SetBool("isIdle", true);
         }
     }
 }
