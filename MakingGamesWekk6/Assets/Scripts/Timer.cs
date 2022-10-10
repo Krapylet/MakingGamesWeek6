@@ -13,13 +13,12 @@ public class Timer : MonoBehaviour
     public Volume gameOverEffect;
     public TMP_Text timerText;
 
-    private bool gameHasStarted = false;
+    private bool gameHasStarted = true;
     private float gameStartTimeStamp;
 
     // Start is called before the first frame update
     void Start()
     {
-        
         DontDestroyOnLoad(gameObject);
     }
 
@@ -41,8 +40,9 @@ public class Timer : MonoBehaviour
         bool timeLimitExeeded = Time.time > gameStartTimeStamp + timeLimit;
         if (timeLimitExeeded)
         {
-            SceneManager.LoadScene("Level 1");
+            gameHasStarted = false;
             gameStartTimeStamp = Time.time;
+            SceneManager.LoadScene("StartMenu");
         }
     }
 
@@ -69,7 +69,7 @@ public class Timer : MonoBehaviour
         // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
         // a sceneBuildIndex of 1 as shown in Build Settings.
 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Level 1");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("LevelTest");
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
