@@ -25,6 +25,11 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(SceneManager.GetActiveScene().name == "EndCutScene") {
+            Destroy(gameObject);
+        }
+
         if (gameHasStarted)
         {
             UpdateTimer();
@@ -40,9 +45,8 @@ public class Timer : MonoBehaviour
         bool timeLimitExeeded = Time.time > gameStartTimeStamp + timeLimit;
         if (timeLimitExeeded)
         {
-            gameHasStarted = false;
             gameStartTimeStamp = Time.time;
-            SceneManager.LoadScene("StartMenu");
+            SceneManager.LoadScene("LevelTest");
         }
     }
 
